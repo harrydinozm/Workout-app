@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Workout">
+  <meta name="description" content="Dein persönlicher Trainingsplan mit Wochenübersicht, Satz-Tracking und Fortschritt.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Workout</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <div class="brand-icon"><span></span><span></span><span></span></div>
+        <div><div class="eyebrow">DEIN TRAININGSPLAN</div><div class="brand-name">Workout</div></div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" id="themeToggle" aria-label="Darstellung wechseln" title="Darstellung wechseln"><svg viewBox="0 0 24 24"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.64 5.64l1.42 1.42m9.88 9.88 1.42 1.42m0-12.72-1.42 1.42m-9.88 9.88-1.42 1.42"/><circle cx="12" cy="12" r="4"/></svg></button>
+        <button class="avatar-button" id="settingsButton" aria-label="Einstellungen">H</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="view active" id="weekView">
+        <div class="greeting-row">
+          <div><p class="eyebrow" id="dateLabel">DEINE WOCHE</p><h1>Trainingsübersicht<span class="title-dot">.</span></h1><p class="subheading" id="weekRange">Dein Plan. Dein Tempo.</p></div>
+          <div class="week-nav"><button class="quiet-button" id="prevWeek" aria-label="Vorherige Woche">‹</button><button class="quiet-button" id="nextWeek" aria-label="Nächste Woche">›</button></div>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card progress-card">
+            <div class="summary-copy"><span class="eyebrow">WOCHENFORTSCHRITT</span><strong id="weekPercent">0%</strong><span class="muted" id="weekProgressText">0 von 7 Tagen aktiv</span></div>
+            <div class="progress-ring" id="weekRing"><div><strong id="ringPercent">0%</strong><span>fertig</span></div></div>
+          </article>
+          <article class="summary-card streak-card">
+            <div class="metric-icon">✦</div><span class="eyebrow">AKTUELLE SERIE</span><strong id="streakCount">0 <small>Tage</small></strong><span class="muted">Bleib dran – Schritt für Schritt.</span>
+          </article>
+        </div>
+
+        <div class="section-heading"><div><span class="eyebrow">DEIN PLAN</span><h2>Diese Woche</h2></div><button class="text-button" id="todayButton">Heute</button></div>
+        <div class="day-list" id="dayList"></div>
+        <div class="section-heading progress-heading"><div><span class="eyebrow">DEINE ENTWICKLUNG</span><h2>Kategorien</h2></div><button class="text-button" data-view="progressView">Details <span>↗</span></button></div>
+        <div class="category-preview" id="categoryPreview"></div>
+      </section>
+
+      <section class="view" id="dayView">
+        <button class="back-button" id="backToWeek">‹ <span>Übersicht</span></button>
+        <div class="day-header">
+          <div><p class="eyebrow" id="dayDate">MONTAG, 18. NOVEMBER</p><h1 id="dayTitle">Legs & Knees<span class="title-dot">.</span></h1><p class="subheading" id="daySubtitle">Konzentriert trainieren. Sauber ausführen.</p></div>
+          <div class="day-done-ring" id="dayRing"><span id="dayPercent">0%</span></div>
+        </div>
+        <div class="day-meta-card">
+          <div class="meta-label">TAGESNOTIZ</div>
+          <textarea id="dayNote" rows="2" placeholder="z. B. Rest day, Basketball, Fokus ..."></textarea>
+          <div class="day-type-row"><span class="meta-label">TRAININGSTYP</span><select id="dayType"><option value="Legs">Legs</option><option value="Upper">Upper</option><option value="Lower">Lower</option><option value="Full Body">Full Body</option><option value="Basketball">Basketball</option><option value="Rest day">Rest day</option><option value="Athletic">Athletic</option><option value="Other">Other</option></select></div>
+        </div>
+        <div class="section-heading exercise-heading"><div><span class="eyebrow">DEINE SESSION</span><h2>Übungen <span class="count-pill" id="exerciseCount">0</span></h2></div><button class="primary-button small" id="addExerciseButton"><span>＋</span> Übung</button></div>
+        <div class="exercise-list" id="exerciseList"></div>
+        <div class="empty-state hidden" id="emptyExercises"><div class="empty-symbol">＋</div><h3>Noch keine Übungen</h3><p>Füge deine erste Übung für diesen Tag hinzu.</p><button class="primary-button" id="emptyAddButton">Übung hinzufügen</button></div>
+        <div class="session-footer"><span id="sessionSummary">Noch nichts abgehakt</span><button class="quiet-button" id="resetDayButton">Zurücksetzen</button></div>
+      </section>
+
+      <section class="view" id="progressView">
+        <button class="back-button" data-view="weekView">‹ <span>Übersicht</span></button>
+        <div class="page-intro"><p class="eyebrow">KONSEQUENZ ZAHLT SICH AUS</p><h1>Dein Fortschritt<span class="title-dot">.</span></h1><p class="subheading">Sieh, was du schon erreicht hast.</p></div>
+        <div class="stats-grid">
+          <article class="stat-tile"><span class="eyebrow">TRAININGSTAGE</span><strong id="totalTrainingDays">0</strong><span class="muted">insgesamt</span></article>
+          <article class="stat-tile"><span class="eyebrow">ABGEHAKTE SÄTZE</span><strong id="totalSets">0</strong><span class="muted">insgesamt</span></article>
+        </div>
+        <div class="section-heading"><div><span class="eyebrow">ZIELE PRO WOCHE</span><h2>Deine Kategorien</h2></div></div>
+        <div class="category-list" id="categoryList"></div>
+        <div class="history-card"><div class="section-heading compact"><div><span class="eyebrow">RÜCKBLICK</span><h2>Letzte Aktivitäten</h2></div></div><div id="historyList" class="history-list"></div></div>
+        <div class="data-actions"><button class="secondary-button" id="exportButton">Daten exportieren</button><button class="secondary-button" id="importButton">Daten importieren</button><input type="file" id="importFile" accept="application/json" hidden></div>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="Hauptnavigation">
+      <button class="tab active" data-view="weekView"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="4.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="14.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="14.5" width="7" height="7" rx="1.5"/></svg><span>Woche</span></button>
+      <button class="tab" data-view="progressView"><svg viewBox="0 0 24 24"><path d="M4 19.5h16M6.5 16V10m5.5 6V4.5m5.5 11.5v-8"/></svg><span>Fortschritt</span></button>
+    </nav>
+  </div>
+
+  <div class="modal-backdrop hidden" id="exerciseModal">
+    <form class="modal" id="exerciseForm">
+      <div class="modal-grabber"></div><div class="modal-heading"><div><p class="eyebrow" id="modalEyebrow">NEUE ÜBUNG</p><h2 id="modalTitle">Übung hinzufügen</h2></div><button type="button" class="icon-button close-modal" aria-label="Schließen">×</button></div>
+      <input type="hidden" id="exerciseId">
+      <label class="field-label">Name der Übung<input id="exerciseName" required maxlength="60" placeholder="z. B. Bulgarian Split Squats"></label>
+      <div class="form-grid three-cols">
+        <label class="field-label">Sätze<input id="exerciseSets" type="number" min="1" max="30" value="3"></label>
+        <label class="field-label">Wdh.<input id="exerciseReps" type="text" maxlength="20" value="10" placeholder="10"></label>
+        <label class="field-label">Gewicht (kg)<input id="exerciseWeight" type="number" min="0" max="999" step="0.5" placeholder="0"></label>
+      </div>
+      <div class="form-grid two-cols">
+        <label class="field-label">Dauer (optional)<input id="exerciseDuration" type="text" maxlength="20" placeholder="z. B. 30 sek"></label>
+        <label class="field-label">Kategorie<select id="exerciseCategory"><option value="Strength">Strength</option><option value="Jump">Jump</option><option value="Conditioning">Conditioning</option><option value="Mobility">Mobility</option><option value="Core">Core</option></select></label>
+      </div>
+      <label class="field-label">Notiz (optional)<textarea id="exerciseNotes" rows="2" maxlength="160" placeholder="Technik, Tempo oder Hinweise ..."></textarea></label>
+      <div class="modal-actions"><button type="button" class="secondary-button" id="cancelExercise">Abbrechen</button><button type="submit" class="primary-button">Speichern</button></div>
+      <button type="button" class="delete-button hidden" id="deleteExercise">Übung löschen</button>
+    </form>
+  </div>
+
+  <div class="modal-backdrop hidden" id="settingsModal">
+    <div class="modal settings-modal"><div class="modal-grabber"></div><div class="modal-heading"><div><p class="eyebrow">PERSÖNLICH</p><h2>Einstellungen</h2></div><button class="icon-button close-settings" aria-label="Schließen">×</button></div>
+      <label class="field-label">Dein Name<input id="userName" maxlength="24" placeholder="Dein Name"></label>
+      <p class="settings-hint">Deine Trainingsdaten werden nur auf diesem Gerät gespeichert. Exportiere regelmäßig eine Sicherung.</p>
+      <button class="secondary-button full-width" id="settingsExport">Backup erstellen</button>
+      <button class="delete-button" id="clearAllData">Alle Daten zurücksetzen</button>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
